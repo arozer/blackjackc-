@@ -1,6 +1,4 @@
-﻿using System.IO.Pipes;
-using System.Reflection.Metadata;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System;
 
 string choose = "n";
 
@@ -24,21 +22,29 @@ void startgame() // начало игры и его геймплей
     Players player = new Players("aroz", 0, ""); // создаётся игрок
     Players dealer = new Players("dealer", 0, "");// создаётся дилер
 
+    void GiveRandomCard (Players player)
+    {
+        // переменная для вывода карты и счёта
+        player.value += shuffle(out number); // прибавляем значение карты к счёту
+        Deck card_dealer = (Deck)number; // вытаскиваем карту из перечисления
+        player.cards += card_dealer + "/"; // объединение новых карт, для вывода руки
+                                           
+    }
+
     for (int i = 0; i < 2; i++) // раздача стартовых карт игрокам
     {
-        if (i != 1)
+        if (i != 1) // Дилер получает карту, кроме 2!
         {
-            // переменная для вывода карты и счёта
-            dealer.value += shuffle(out number); // прибавляем значение карты к счёту
-            Deck card_dealer = (Deck)number; // вытаскиваем карту из перечисления
-            dealer.cards += card_dealer + "/"; // объединение новых карт, для вывода руки
-                                               // Дилер получает карту, кроме 2!
+            GiveRandomCard(dealer);
+            GiveRandomCard(player);
         }
-        player.value += shuffle(out number);
-        Deck card_player = (Deck)number;
-        player.cards += card_player + "/";
-        // Игрок получает карту
+        else
+        {
+            GiveRandomCard(player);
+        }
+
     }
+
     gameplay();
     static int shuffle(out int number) // генерация случайной карты
     {
